@@ -1,5 +1,16 @@
 # herehack_s1_Hessian_Matrix
 
-![image](https://user-images.githubusercontent.com/72443636/203842192-7803c649-20dd-4ef8-830f-cc5ebd966316.png)
-![image](https://user-images.githubusercontent.com/72443636/203842484-007b670d-d169-4454-b59d-929ad3390418.png)
-![image](https://user-images.githubusercontent.com/72443636/203842615-ec0598b4-7c2f-4daa-825e-fa9b95121ca3.png)
+## Problem Statement
+**20-min city** : "Provide application users with POIs within 20 mins of travel distance depending on the category requested by user (e.g. - user searches for nearby dine-in restaurants for his location, provide list of restuarants in 20 mins of reach to user)"
+
+## Idea/ Solution
+**Main goal** : Having access to all the essential services and accommodations within short time period and minimal distance coverage
+**Our solution** : Keeping vital locations (medical facilities, schools, parks etc) within walking distance
+### The Application
+Map with POI displayed as cards
+Side-menu for selected location which contains location information, like the name, image, rating and associated contact details
+Utilizing HERE's MAP Rendering and API services
+
+## Technology Stack
+**Website development** : HTML, CSS, JavaScript, React
+**Geolocation tagging** (and development of other location-based features) : HERE APIs (other APIs if needed)
