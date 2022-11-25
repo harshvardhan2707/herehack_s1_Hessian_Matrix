@@ -16,8 +16,8 @@
       routeRequestParams = {
         'origin': lat+','+lon,
           'range[type]': 'time',
-          'range[values]': 1200,
-          'transportMode': 'car',
+          'range[values]': 120,
+          'transportMode': 'pedestrian',
       };
 
   // add a marker to display a starting point of the vehicle
@@ -28,10 +28,31 @@
 
   router.calculateIsoline(
     routeRequestParams,
-    onSuccess,
+    onSuccess1,
     onError
   );
 }
+function addRouteShapeToMap(route) {
+  route.polygons.forEach((section) => {
+    // decode LineString from the flexible polyline
+    let linestring = H.geo.LineString.fromFlexiblePolyline(section.outer);
+
+    // Create a polygon to display the area
+    let polygon = new H.map.Polygon(linestring, {
+      style: {
+        lineWidth: 4,
+        strokeColor: 'rgba(0, 128, 0, 0.7)'
+      }
+    });
+
+    // Add the polygon to the map
+    map.addObject(polygon);
+    // And zoom to its bounding rectangle
+    map.getViewModel().setLookAtData({
+      bounds: polygon.getBoundingBox()
+    });
+  });
+} 
  function getLocation() {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(showPosition);
@@ -86,6 +107,16 @@ function showPosition(position) {
    *
    * see: http://developer.here.com/rest-apis/documentation/geocoder/topics/resource-type-response-geocode.html
    */
+   function onSuccess1(result) {
+    var route = result.isolines[0];
+  
+    /*
+     * The styling of the route response on the map is entirely under the developer's control.
+     * A representative styling can be found the full JS + HTML code of this example
+     * in the functions below:
+     */
+    addRouteShapeToMap(route);
+  }
   function onSuccess(result) {
     var locations = result.items;
    /*
@@ -94,7 +125,7 @@ function showPosition(position) {
     * in the functions below:
     */
     addLocationsToMap(locations);
-    addLocationsToPanel(locations);
+    // addLocationsToPanel(locations);
     // ... etc.
   }
   
@@ -284,8 +315,10 @@ function showPosition(position) {
       group.addObject(marker);
   map.addObject(group);
   map.setCenter(location.position);
+  if( location.position.lat && location.position.lng){
+  calculateIsolineRoute(platform, location.position.lat,location.position.lng)}
   console.log("Bounding box",group.getBoundingBox().getCenter());
-  console.log("Marker",location.position)
+  console.log("Marker",location.position.lng)
       }).catch(function (error) {
           console.log('request failed', error)
         });
