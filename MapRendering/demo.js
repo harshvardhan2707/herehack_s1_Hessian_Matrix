@@ -206,56 +206,68 @@ function showPosition(position) {
     // Add a marker for each location found
     for (i = 0;  i < 1; i += 1) {
       let location = locations[i];
-      // let params = {
-      //   // "param1": "value1",
-      //   // "param2": "value2"
-      //   // "in":location.mapView.west.toString()+"%2C"+location.mapView.south.toString()+"%2C"+location.mapView.east.toString()+"%2C"+location.mapView.north.toString(),
-      //   "apiKey":API
+      let params = {
+        // "param1": "value1",
+        // "param2": "value2"
+        // "in":location.mapView.west.toString()+"%2C"+location.mapView.south.toString()+"%2C"+location.mapView.east.toString()+"%2C"+location.mapView.north.toString(),
+        "apiKey":API
         
-      // };
+      };
       // console.log(location.mapView.west.toString()+"%2C"+location.mapView.south.toString()+"%2C"+location.mapView.east.toString()+"%2C"+location.mapView.north.toString())
       
-      // let query = Object.keys(params)
-      //              .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
-      //              .join('&');
+      let query = Object.keys(params)
+                   .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
+                   .join('&');
       
-      // let url = 'https://places.ls.hereapi.com/places/v1/discover/explore?cat=hospital-health-care-facility&in='+location.mapView.west.toString()+"%2C"+location.mapView.south.toString()+"%2C"+location.mapView.east.toString()+"%2C"+location.mapView.north.toString()+ "&"+query;
+      let url = 'https://places.ls.hereapi.com/places/v1/discover/explore?cat=hospital-health-care-facility&in='+location.mapView.west.toString()+"%2C"+location.mapView.south.toString()+"%2C"+location.mapView.east.toString()+"%2C"+location.mapView.north.toString()+ "&"+query;
       // // let url='https://places.ls.hereapi.com/places/v1/discover/here?at='+location.position.lat+'%2C'+location.position.lng+'&'+query;
       // console.log(location.position)
-      // // var X=""
-      // fetch(url)
-      //   .then(data => data.text())
-      //   .then((text) => {
-      //     // const L=JSON.stringify(text)
-      // const X=JSON.parse(text)
-      //     // console.log('request succeeded with JSON response',X.results.items)
-      //     // if(X.results && X.results.items>0){
-      //       if(X && X.results && X.results.items){
-      //     var Arr=X.results.items;
-      //   for(j=0;j<Arr.length;j+=1){
-      //     group.addEventListener('tap', function (evt) {
-      //       map.setCenter(evt.target.getGeometry());
-      //       openBubble(
-      //          evt.target.getGeometry(), evt.target.label);
-      //     }, false);
+      // var X=""
+      fetch(url)
+        .then(data => data.text())
+        .then((text) => {
+          // const L=JSON.stringify(text)
+      const X=JSON.parse(text)
+          // console.log('request succeeded with JSON response',X.results.items)
+          // if(X.results && X.results.items>0){
+            if(X && X.results && X.results.items){
+              console.log("X",X);
+          var Arr=X.results.items;
+        for(j=0;j<Arr.length;j+=1){
+          group.addEventListener('tap', function (evt) {
+            map.setCenter(evt.target.getGeometry());
+            openBubble(
+               evt.target.getGeometry(), evt.target.label);
+          }, false);
         
-      //     // Add the locations group to the map
-      //     map.addObject(group);
-      //     map.setCenter(group.getBoundingBox().getCenter());
-      //     var icon = new H.map.Icon(svgMarkupH),
-      //     coords = {lat: Arr[j].position[0], lng: Arr[j].position[1]},
-      //     marker = new H.map.Marker(coords, {icon: icon});
+          // Add the locations group to the map
+          map.addObject(group);
+          // map.setCenter(group.getBoundingBox().getCenter());
+          var icon = new H.map.Icon(svgMarkupH),
+          coords = {lat: Arr[j].position[0], lng: Arr[j].position[1]},
+          marker = new H.map.Marker(coords, {icon: icon});
+          group.addObject(marker);
       
       // // Add the marker to the map and center the map at the location of the marker:
-      //   map.addObject(marker);}
-      //   }
-      //   }).catch(function (error) {
-      //     console.log('request failed', error)
-      //   });
-        marker = new H.map.Marker(location.position);
+        // map.addObject(marker);}
+        }
+        }
+        map.addObject(group);
+          marker = new H.map.Marker(location.position);
       console.log(location.mapView);
       marker.label = location.address.label;
       group.addObject(marker);
+  map.addObject(group);
+  map.setCenter(location.position);
+  console.log("Bounding box",group.getBoundingBox().getCenter());
+  console.log("Marker",location.position)
+      }).catch(function (error) {
+          console.log('request failed', error)
+        });
+      //   marker = new H.map.Marker(location.position);
+      // console.log(location.mapView);
+      // marker.label = location.address.label;
+      // group.addObject(marker);
         
       // var query=''
       // console.log(request);
@@ -265,8 +277,8 @@ function showPosition(position) {
   
     
   // map.setCenter(coords);  
-  map.addObject(group);
-  map.setCenter(group.getBoundingBox().getCenter());
+  // map.addObject(group);
+  // map.setCenter(group.getBoundingBox().getCenter());
   }
   
   // Now use the map as required...
