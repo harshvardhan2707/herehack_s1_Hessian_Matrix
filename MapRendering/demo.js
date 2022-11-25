@@ -9,6 +9,29 @@
  * @param   {H.service.Platform} platform    A stub class to access HERE services
  */
 
+ const API="SzzUhV7G1Ir3KuY01HwSptDxR6oY_urxQ5PsztU4FLI"
+
+ function calculateIsolineRoute(platform,lat,lon) {
+  var router = platform.getRoutingService(null, 8),
+      routeRequestParams = {
+        'origin': lat+','+lon,
+          'range[type]': 'time',
+          'range[values]': 1200,
+          'transportMode': 'car',
+      };
+
+  // add a marker to display a starting point of the vehicle
+  map.addObject(new H.map.Marker({
+    lat: lat,
+    lng: lon
+  }));
+
+  router.calculateIsoline(
+    routeRequestParams,
+    onSuccess,
+    onError
+  );
+}
  function getLocation() {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(showPosition);
@@ -42,7 +65,7 @@ function showPosition(position) {
     getLocation();
     
   });
-  const API="SzzUhV7G1Ir3KuY01HwSptDxR6oY_urxQ5PsztU4FLI"
+  
  function geocode(platform,value) {
     
     var geocoder = platform.getSearchService(),
