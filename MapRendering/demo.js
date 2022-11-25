@@ -13,6 +13,7 @@
     let value = input.value
     geocode(platform,value)
   });
+  const API="SzzUhV7G1Ir3KuY01HwSptDxR6oY_urxQ5PsztU4FLI"
  function geocode(platform,value) {
     
     var geocoder = platform.getSearchService(),
@@ -59,17 +60,24 @@
   //Step 1: initialize communication with the platform
   // In your own code, replace variable window.apikey with your own apikey
   var platform = new H.service.Platform({
-    apikey: "qRzuwzCMSHyOG3JAGY5_HtzjwUWRLWOQp5kq1BbaJSk"
+    apikey: API
   });
   var defaultLayers = platform.createDefaultLayers();
   
   //Step 2: initialize a map - this map is centered over California
   var map = new H.Map(document.getElementById('map'),
     defaultLayers.vector.normal.map,{
-    center: {lat:37.376, lng:-122.034},
+    center: {lat:52, lng:13},
     zoom: 15,
     pixelRatio: window.devicePixelRatio || 1
   });
+
+  var svgMarkup = '<svg width="24" height="24" ' +
+    'xmlns="http://www.w3.org/2000/svg">' +
+    '<rect stroke="white" fill="#1b468d" x="1" y="1" width="22" ' +
+    'height="22" /><text x="12" y="18" font-size="12pt" ' +
+    'font-family="Arial" font-weight="bold" text-anchor="middle" ' +
+    'fill="white">H</text></svg>';
   // add a resize listener to make sure that the map occupies the whole container
   window.addEventListener('resize', () => map.getViewPort().resize());
   
@@ -104,6 +112,7 @@
     }
   }
   
+  
   /**
    * Creates a series of list items for each location found, and adds it to the panel.
    * @param {Object[]} locations An array of locations as received from the
@@ -119,7 +128,7 @@
     nodeOL.style.marginRight ='5%';
   
   
-     for (i = 0;  i < locations.length; i += 1) {
+     for (i = 0;  i < 1; i += 1) {
        let location = locations[i];
        var li = document.createElement('li'),
             divLabel = document.createElement('div'),
@@ -159,22 +168,67 @@
         i;
   
     // Add a marker for each location found
-    for (i = 0;  i < locations.length; i += 1) {
+    for (i = 0;  i < 1; i += 1) {
       let location = locations[i];
-      marker = new H.map.Marker(location.position);
+      let params = {
+        // "param1": "value1",
+        // "param2": "value2"
+        // "in":location.mapView.west.toString()+"%2C"+location.mapView.south.toString()+"%2C"+location.mapView.east.toString()+"%2C"+location.mapView.north.toString(),
+        "apiKey":API
+        
+      };
+      console.log(location.mapView.west.toString()+"%2C"+location.mapView.south.toString()+"%2C"+location.mapView.east.toString()+"%2C"+location.mapView.north.toString())
+      
+      let query = Object.keys(params)
+                   .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
+                   .join('&');
+      
+      // let url = 'https://places.ls.hereapi.com/places/v1/discover/explore?cat=hospital-health-care-facility&in='+location.mapView.west.toString()+"%2C"+location.mapView.south.toString()+"%2C"+location.mapView.east.toString()+"%2C"+location.mapView.north.toString()+ "&"+query;
+      let url='https://places.ls.hereapi.com/places/v1/discover/here?at='+location.position.lat+'%2C'+location.position.lng+'&'+query;
+      console.log(location.position)
+      // var X=""
+      fetch(url)
+        .then(data => data.text())
+        .then((text) => {
+          // const L=JSON.stringify(text)
+      const X=JSON.parse(text)
+          // console.log('request succeeded with JSON response',X.results.items)
+          // if(X.results && X.results.items>0){
+            if(X && X.results && X.results.items){
+          var Arr=X.results.items;
+        for(j=0;j<Arr.length;j+=1){
+          group.addEventListener('tap', function (evt) {
+            map.setCenter(evt.target.getGeometry());
+            openBubble(
+               evt.target.getGeometry(), evt.target.label);
+          }, false);
+        
+          // Add the locations group to the map
+          map.addObject(group);
+          map.setCenter(group.getBoundingBox().getCenter());
+          var icon = new H.map.Icon(svgMarkup),
+          coords = {lat: Arr[j].position[0], lng: Arr[j].position[1]},
+          marker = new H.map.Marker(coords, {icon: icon});
+      
+      // Add the marker to the map and center the map at the location of the marker:
+        map.addObject(marker);}
+        }
+        }).catch(function (error) {
+          console.log('request failed', error)
+        });
+        marker = new H.map.Marker(location.position);
+      console.log(location.mapView);
       marker.label = location.address.label;
       group.addObject(marker);
+        
+      // var query=''
+      // console.log(request);
+      // console.log(query)
+      
     }
   
-    group.addEventListener('tap', function (evt) {
-      map.setCenter(evt.target.getGeometry());
-      openBubble(
-         evt.target.getGeometry(), evt.target.label);
-    }, false);
-  
-    // Add the locations group to the map
-    map.addObject(group);
-    map.setCenter(group.getBoundingBox().getCenter());
+    
+  // map.setCenter(coords);
   }
   
   // Now use the map as required...
