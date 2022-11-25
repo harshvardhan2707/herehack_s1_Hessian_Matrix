@@ -240,22 +240,22 @@ document.getElementById("Transport").addEventListener("change", function() {
 
   var svgMarkupH = '<svg width="24" height="24" ' +
     'xmlns="http://www.w3.org/2000/svg">' +
-    '<rect stroke="white" fill="#1b468d" x="1" y="1" width="22" ' +
+    '<rect stroke="white" fill="#c41b2c" x="1" y="1" width="22" ' +
     'height="22" /><text x="12" y="18" font-size="12pt" ' +
     'font-family="Arial" font-weight="bold" text-anchor="middle" ' +
     'fill="white">H</text></svg>';
     var svgMarkupA = '<svg width="24" height="24" ' +
     'xmlns="http://www.w3.org/2000/svg">' +
-    '<rect stroke="white" fill="#1b468d" x="1" y="1" width="22" ' +
+    '<rect stroke="white" fill="#ffe45e" x="1" y="1" width="22" ' +
     'height="22" /><text x="12" y="18" font-size="12pt" ' +
     'font-family="Arial" font-weight="bold" text-anchor="middle" ' +
-    'fill="white">A</text></svg>';
+    'fill="black">A</text></svg>';
     var svgMarkupP = '<svg width="24" height="24" ' +
     'xmlns="http://www.w3.org/2000/svg">' +
-    '<rect stroke="white" fill="#1b468d" x="1" y="1" width="22" ' +
+    '<rect stroke="white" fill="#59e37d" x="1" y="1" width="22" ' +
     'height="22" /><text x="12" y="18" font-size="12pt" ' +
     'font-family="Arial" font-weight="bold" text-anchor="middle" ' +
-    'fill="white">P</text></svg>';
+    'fill="black">P</text></svg>';
     var svgMarkupR = '<svg width="24" height="24" ' +
     'xmlns="http://www.w3.org/2000/svg">' +
     '<rect stroke="white" fill="#1b468d" x="1" y="1" width="22" ' +
