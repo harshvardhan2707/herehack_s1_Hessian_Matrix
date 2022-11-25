@@ -12,7 +12,7 @@
  * @param {String} html             Data associated with the marker
  */
 
- const API="NI3GMO5BI1034mb3gaU-KWf9hKAlKwIWqQoxPuhSuTY"
+ const API="dAEsWjYI8udPblfISD_THv_pgodanJz2RCwmdAUqi8M"
  let cat="cat=restaurant";
  let mode="pedestrian";
  function calculateRouteFromAtoB(platform,startlat,startlon,endlat,endlon) {
