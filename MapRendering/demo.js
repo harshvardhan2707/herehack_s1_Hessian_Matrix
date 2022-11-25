@@ -342,7 +342,7 @@ document.getElementById("Places").addEventListener("change", function() {
   function addLocationsToMap(locations){
     // var x=document.getElementById('map');
     // x.innerHTML='';
-    map.removeObjects(map.getObjects ())
+    map.removeObjects(map.getObjects ());
     var group = new  H.map.Group(),
         position,
         i;
@@ -377,10 +377,10 @@ document.getElementById("Places").addEventListener("change", function() {
             if(X && X.results && X.results.items){
               console.log("X",X);
           var Arr=X.results.items;
-        for(j=0;j<Arr.length;j+=1){
+        for(let j=0;j<Arr.length;j+=1){
           group.addEventListener('tap', function (evt) {
             map.setCenter(evt.target.getGeometry());
-            console.log(Arr[j]);
+            // console.log('ARR',Arr[);
             if(Arr[j] && Arr[j].title){
             openBubble(
               
