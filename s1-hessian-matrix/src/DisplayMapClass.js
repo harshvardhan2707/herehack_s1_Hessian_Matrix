@@ -1,4 +1,3 @@
-// src/DisplayMapClass.js
 import * as React from 'react';
 import data from './API.json';
 export class DisplayMapClass extends React.Component {
@@ -10,6 +9,8 @@ export class DisplayMapClass extends React.Component {
     map: null
   };
 
+  // lat= this.props.lat;
+  // lng= this.props.long;
   componentDidMount() {
 
     const H = window.H;
@@ -24,9 +25,9 @@ export class DisplayMapClass extends React.Component {
       this.mapRef.current,
       defaultLayers.vector.normal.map,
       {
-        // This map is centered over Europe
-        center: { lat: 50, lng: 5 },
-        zoom: 4,
+        // This map is centered over searched value(?)
+        center: { lat: this.props.lat, lng: this.props.lon },
+        zoom: 12,
         pixelRatio: window.devicePixelRatio || 1
       }
     );
@@ -44,6 +45,7 @@ export class DisplayMapClass extends React.Component {
   render() {
     return (
       // Set a height on the map so it will display
+      //map.setCenter(this.props.lat_long, true);
       this.mapRef && <div ref={this.mapRef} style={{ height: "1000px" }} />
     );
   }

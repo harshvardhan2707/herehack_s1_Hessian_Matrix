@@ -31,9 +31,12 @@ import './App.css';
 import {DisplayMapClass} from './DisplayMapClass';
 import data from './API.json';
 
+
 function App() {
   let textInput = React.createRef();
   const [loc,setLoc]=useState('Pune');
+  const [lat,setLat]=useState(50);
+  const [lon,setLon]=useState(0);
   function handleClick() {
   // console.log(textInput.current.value);
   setLoc(textInput.current.value);
@@ -53,12 +56,15 @@ function App() {
       // console.log(X[])
       // alert(X.items)
       console.log(X.data.items[0].address); 
+      setLat(X.data.items[0].position.lat);
+      setLon(X.data.items[0].position.lng);
+      // DisplayMapClass.
     })},[loc]); 
 return (
   <div>
       <input ref={textInput} placeholder="Type a message..." />
       <button onClick={handleClick}>Search Location</button>
-  <DisplayMapClass />
+  <DisplayMapClass lat={lat} lon={lon}/>
   </div>
   
   
