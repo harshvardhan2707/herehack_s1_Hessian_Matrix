@@ -35,17 +35,19 @@ import data from './API.json';
 function App() {
   let textInput = React.createRef();
   const [loc,setLoc]=useState('Pune');
-  const [lat,setLat]=useState(28.474388);
-  const [lon,setLon]=useState(77.503990);
+  const [lat,setLat]=useState(25.60129 );
+  const [lon,setLon]=useState(85.13752);
   function handleClick() {
   // console.log(textInput.current.value);
   setLoc(textInput.current.value);
 
 }
-  
+  // const handleClick=()={
+
+  // }
   useEffect(()=>{
     let f=loc;
-    if(f!='')
+    if(f!=='')
     // for
     Axios.get('https://geocode.search.hereapi.com/v1/geocode?q='+f+'&apiKey='+data.YOUR_API_KEY).then((response)=>{
       // setLoc(response); 
@@ -59,13 +61,14 @@ function App() {
       console.log(X.data.items[0].position.lat,X.data.items[0].position.lng);
       setLat(X.data.items[0].position.lat);
       setLon(X.data.items[0].position.lng);
+      this.render();
       // DisplayMapClass.
-    })},[loc]); 
+    })},[loc]);
 return (
   <div>
       <input ref={textInput} placeholder="Type a message..." />
-      <button onClick={handleClick}>Search Location</button>
-  <DisplayMapClass/>
+      <button id="searchBtn" onClick={handleClick}>Search Location</button>
+  <DisplayMapClass lat={lat} lon={lon}/>
   </div>
   
   
