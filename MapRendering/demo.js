@@ -8,10 +8,38 @@
  *
  * @param   {H.service.Platform} platform    A stub class to access HERE services
  */
+
+ function getLocation() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(showPosition);
+  } else { 
+    console.log("Geolocation is not supported by this browser.");
+  }
+}
+
+function showPosition(position) {
+  const lat= position.coords.latitude; const lon= position.coords.longitude;
+  let value=''
+  //console.log(position.coords.latitude, position.coords.longitude);
+  Axios.get('https://revgeocode.search.hereapi.com/v1/revgeocode?at='+lat+','+lon+'&lang=en-US&apiKey='+data.YOUR_API_KEY).then((response)=>{
+      const L=JSON.stringify(response)
+      const X=JSON.parse(L)
+      value=X.data.items[0].address.label;
+      console.log("Teri mummy");
+      geocode(platform,value);
+    })
+}
+
  document.getElementById("myBtn").addEventListener("click", function() {
     let input = document.getElementById("Hello")
     let value = input.value
     geocode(platform,value)
+  });
+  document.getElementById("myBtn1").addEventListener("click", function() {
+    console.log("Clicked");
+    // geocode(platform,"Pune");
+    // getLocation();
+    
   });
   const API="SzzUhV7G1Ir3KuY01HwSptDxR6oY_urxQ5PsztU4FLI"
  function geocode(platform,value) {
@@ -19,6 +47,7 @@
     var geocoder = platform.getSearchService(),
         geocodingParameters = {
           q: value
+          
         };
   
     geocoder.geocode(
@@ -72,7 +101,13 @@
     pixelRatio: window.devicePixelRatio || 1
   });
 
-  var svgMarkup = '<svg width="24" height="24" ' +
+  var svgMarkupH = '<svg width="24" height="24" ' +
+    'xmlns="http://www.w3.org/2000/svg">' +
+    '<rect stroke="white" fill="#1b468d" x="1" y="1" width="22" ' +
+    'height="22" /><text x="12" y="18" font-size="12pt" ' +
+    'font-family="Arial" font-weight="bold" text-anchor="middle" ' +
+    'fill="white">H</text></svg>';
+    var svgMarkup = '<svg width="24" height="24" ' +
     'xmlns="http://www.w3.org/2000/svg">' +
     '<rect stroke="white" fill="#1b468d" x="1" y="1" width="22" ' +
     'height="22" /><text x="12" y="18" font-size="12pt" ' +
@@ -177,14 +212,14 @@
         "apiKey":API
         
       };
-      console.log(location.mapView.west.toString()+"%2C"+location.mapView.south.toString()+"%2C"+location.mapView.east.toString()+"%2C"+location.mapView.north.toString())
+      // console.log(location.mapView.west.toString()+"%2C"+location.mapView.south.toString()+"%2C"+location.mapView.east.toString()+"%2C"+location.mapView.north.toString())
       
       let query = Object.keys(params)
                    .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
                    .join('&');
       
-      // let url = 'https://places.ls.hereapi.com/places/v1/discover/explore?cat=hospital-health-care-facility&in='+location.mapView.west.toString()+"%2C"+location.mapView.south.toString()+"%2C"+location.mapView.east.toString()+"%2C"+location.mapView.north.toString()+ "&"+query;
-      let url='https://places.ls.hereapi.com/places/v1/discover/here?at='+location.position.lat+'%2C'+location.position.lng+'&'+query;
+      let url = 'https://places.ls.hereapi.com/places/v1/discover/explore?cat=hospital-health-care-facility&in='+location.mapView.west.toString()+"%2C"+location.mapView.south.toString()+"%2C"+location.mapView.east.toString()+"%2C"+location.mapView.north.toString()+ "&"+query;
+      // let url='https://places.ls.hereapi.com/places/v1/discover/here?at='+location.position.lat+'%2C'+location.position.lng+'&'+query;
       console.log(location.position)
       // var X=""
       fetch(url)
@@ -206,7 +241,7 @@
           // Add the locations group to the map
           map.addObject(group);
           map.setCenter(group.getBoundingBox().getCenter());
-          var icon = new H.map.Icon(svgMarkup),
+          var icon = new H.map.Icon(svgMarkupH),
           coords = {lat: Arr[j].position[0], lng: Arr[j].position[1]},
           marker = new H.map.Marker(coords, {icon: icon});
       
@@ -220,6 +255,9 @@
       console.log(location.mapView);
       marker.label = location.address.label;
       group.addObject(marker);
+      // group.setCenter()
+      // var X1=JSON.parse(marker);
+      // console.log("Marker",marker.Ca);
         
       // var query=''
       // console.log(request);
@@ -228,8 +266,57 @@
     }
   
     
-  // map.setCenter(coords);
+  // map.setCenter(coords);  
+  map.addObject(group);
+  map.setCenter(location.position);
+  // console.log(location.position)
+  console.log("Center",group.getBoundingBox().getCenter())
+  console.log(group.getBoundingBox().getCenter())
   }
   
   // Now use the map as required...
-  geocode(platform,"pune");
+
+  // function getLocation() {
+  //   if (navigator.geolocation) {
+  //     navigator.geolocation.getCurrentPosition(showPosition);
+  //   } else { 
+  //     x.innerHTML = "Geolocation is not supported by this browser.";
+  //   }
+  // }
+
+  // function showPosition(position) {
+  //  var lat=position.coords.latitude;
+  //   var lng=position.coords.longitude;
+  //   let params = {
+  //     // "param1": "value1",
+  //     // "param2": "value2"
+  //     // "in":location.mapView.west.toString()+"%2C"+location.mapView.south.toString()+"%2C"+location.mapView.east.toString()+"%2C"+location.mapView.north.toString(),
+  //     "apiKey":API
+      
+  //   };
+  //   // console.log(location.mapView.west.toString()+"%2C"+location.mapView.south.toString()+"%2C"+location.mapView.east.toString()+"%2C"+location.mapView.north.toString())
+    
+  //   let query = Object.keys(params)
+  //                .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
+  //                .join('&');
+    
+  //   let url1 = 'https://revgeocode.search.hereapi.com/v1/revgeocode?at='+lat+"%2C"+lng+'&lang=en-US&apiKey='+API;
+  //   // let url='https://places.ls.hereapi.com/places/v1/discover/here?at='+location.position.lat+'%2C'+location.position.lng+'&'+query;
+  //   console.log(location.position)
+  //   // var X=""
+  //   fetch(url1)
+  //     .then(data => data.text())
+  //     .then((text) => {
+  //       // const L=JSON.stringify(text)
+  //   const X=JSON.parse(text)
+  //       // console.log('request succeeded with JSON response',X.results.items)
+  //       // if(X.results && X.results.items>0){
+  //         console.log(text);
+          
+  //     }).catch(function (error) {
+  //       console.log('request failed', error)
+  //     });
+  //     geocode(platform,"Pune");
+  // }
+  // // geoLocation();
+  geocode(platform,"Pune");
