@@ -199,6 +199,8 @@ function showPosition(position) {
    *                             H.service.GeocodingService
    */
   function addLocationsToMap(locations){
+    // var x=document.getElementById('map');
+    // x.innerHTML='';
     var group = new  H.map.Group(),
         position,
         i;
