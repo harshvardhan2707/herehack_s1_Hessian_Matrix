@@ -342,6 +342,7 @@ document.getElementById("Places").addEventListener("change", function() {
   function addLocationsToMap(locations){
     // var x=document.getElementById('map');
     // x.innerHTML='';
+    map.removeObjects(map.getObjects ())
     var group = new  H.map.Group(),
         position,
         i;
@@ -388,6 +389,7 @@ document.getElementById("Places").addEventListener("change", function() {
           }, false);
         
           // Add the locations group to the map
+          // map.clear();
           map.addObject(group);
           // map.setCenter(group.getBoundingBox().getCenter());
           // var x=document.getElementById('Places')
