@@ -14,6 +14,7 @@
 
  const API="NI3GMO5BI1034mb3gaU-KWf9hKAlKwIWqQoxPuhSuTY"
  let cat="cat=restaurant";
+ let mode="pedestrian";
  function calculateRouteFromAtoB(platform,startlat,startlon,endlat,endlon) {
   var router = platform.getRoutingService(null, 8),
       routeRequestParams = {
@@ -83,8 +84,8 @@ function addWaypointsToPanel(route) {
       routeRequestParams = {
         'origin': lat+','+lon,
           'range[type]': 'time',
-          'range[values]': 120,
-          'transportMode': 'pedestrian',
+          'range[values]': 1200,
+          'transportMode': mode,
       };
 
   // add a marker to display a starting point of the vehicle
@@ -147,6 +148,13 @@ document.getElementById("Places").addEventListener("change", function() {
   else if(x.value==='Restaurants')cat="cat=restaurant";
   else if(x.value==='Atm')cat="cat=atm-bank-exchange";
   else if(x.value==='Parks')cat="cat=leisure-outdoor";
+});
+document.getElementById("Transport").addEventListener("change", function() {
+  var x=document.getElementById("Transport");
+  if(x.value==='Pedestrian')mode="pedestrian";
+  else if(x.value==='Car')mode="car";
+  else if(x.value==='Bicycle')mode="bicycle";
+  else if(x.value==='Truck')mode="truck";
 });
 
  document.getElementById("myBtn").addEventListener("click", function() {
