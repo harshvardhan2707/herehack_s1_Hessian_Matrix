@@ -35,18 +35,24 @@ function App() {
   let textInput = React.createRef();
   const [loc,setLoc]=useState('Pune');
   function handleClick() {
-  console.log(textInput.current.value);
+  // console.log(textInput.current.value);
   setLoc(textInput.current.value);
 
 }
   
   useEffect(()=>{
     let f=loc;
-    
+    if(f!='')
     // for
-    Axios.get('https://geocode.search.hereapi.com/v1/geocode?q=240+Washington+St.%2C+Boston&apiKey='+data.YOUR_API_KEY).then((response)=>{
+    Axios.get('https://geocode.search.hereapi.com/v1/geocode?q='+f+'&apiKey='+data.YOUR_API_KEY).then((response)=>{
       // setLoc(response); 
-      console.log(response);
+      // L=response.json
+      // const obj=JSON.parse(response)
+      const L=JSON.stringify(response)
+      const X=JSON.parse(L)
+      // console.log(X[])
+      // alert(X.items)
+      console.log(X.data.items[0].address); 
     })},[loc]); 
 return (
   <div>
