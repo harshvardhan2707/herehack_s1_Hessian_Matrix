@@ -13,7 +13,7 @@
  */
 
  const API="NI3GMO5BI1034mb3gaU-KWf9hKAlKwIWqQoxPuhSuTY"
-
+ let cat="cat=restaurant";
  function calculateRouteFromAtoB(platform,startlat,startlon,endlat,endlon) {
   var router = platform.getRoutingService(null, 8),
       routeRequestParams = {
@@ -141,6 +141,13 @@ function showPosition(position) {
   });
   
 }
+document.getElementById("Places").addEventListener("change", function() {
+  var x=document.getElementById("Places");
+  if(x.value==='Hospitals')cat="cat=hospital-health-care-facility";
+  else if(x.value==='Restaurants')cat="cat=restaurant";
+  else if(x.value==='Atm')cat="cat=atm-bank-exchange";
+  else if(x.value==='Parks')cat="cat=leisure-outdoor";
+});
 
  document.getElementById("myBtn").addEventListener("click", function() {
     let input = document.getElementById("Hello")
@@ -229,12 +236,25 @@ function showPosition(position) {
     'height="22" /><text x="12" y="18" font-size="12pt" ' +
     'font-family="Arial" font-weight="bold" text-anchor="middle" ' +
     'fill="white">H</text></svg>';
-    var svgMarkup = '<svg width="24" height="24" ' +
+    var svgMarkupA = '<svg width="24" height="24" ' +
     'xmlns="http://www.w3.org/2000/svg">' +
     '<rect stroke="white" fill="#1b468d" x="1" y="1" width="22" ' +
     'height="22" /><text x="12" y="18" font-size="12pt" ' +
     'font-family="Arial" font-weight="bold" text-anchor="middle" ' +
-    'fill="white">H</text></svg>';
+    'fill="white">A</text></svg>';
+    var svgMarkupP = '<svg width="24" height="24" ' +
+    'xmlns="http://www.w3.org/2000/svg">' +
+    '<rect stroke="white" fill="#1b468d" x="1" y="1" width="22" ' +
+    'height="22" /><text x="12" y="18" font-size="12pt" ' +
+    'font-family="Arial" font-weight="bold" text-anchor="middle" ' +
+    'fill="white">P</text></svg>';
+    var svgMarkupR = '<svg width="24" height="24" ' +
+    'xmlns="http://www.w3.org/2000/svg">' +
+    '<rect stroke="white" fill="#1b468d" x="1" y="1" width="22" ' +
+    'height="22" /><text x="12" y="18" font-size="12pt" ' +
+    'font-family="Arial" font-weight="bold" text-anchor="middle" ' +
+    'fill="white">R</text></svg>';
+    
   // add a resize listener to make sure that the map occupies the whole container
   window.addEventListener('resize', () => map.getViewPort().resize());
   
@@ -342,7 +362,7 @@ function showPosition(position) {
                    .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
                    .join('&');
       
-      let url = 'https://places.ls.hereapi.com/places/v1/discover/explore?cat=hospital-health-care-facility&in='+location.mapView.west.toString()+"%2C"+location.mapView.south.toString()+"%2C"+location.mapView.east.toString()+"%2C"+location.mapView.north.toString()+ "&"+query;
+      let url = 'https://places.ls.hereapi.com/places/v1/discover/explore?'+cat+'&in='+location.mapView.west.toString()+"%2C"+location.mapView.south.toString()+"%2C"+location.mapView.east.toString()+"%2C"+location.mapView.north.toString()+ "&"+query;
       // // let url='https://places.ls.hereapi.com/places/v1/discover/here?at='+location.position.lat+'%2C'+location.position.lng+'&'+query;
       // console.log(location.position)
       // var X=""
@@ -360,15 +380,23 @@ function showPosition(position) {
           group.addEventListener('tap', function (evt) {
             map.setCenter(evt.target.getGeometry());
             console.log(Arr[j]);
+            if(Arr[j] && Arr[j].title){
             openBubble(
-               evt.target.getGeometry(), Arr[j].title);
+              
+               evt.target.getGeometry(), Arr[j].title);}
               //  calculateRouteFromAtoB(platform,location.position.lat,location.position.lng,Arr[j].position[0],Arr[j].position[1]);
           }, false);
         
           // Add the locations group to the map
           map.addObject(group);
           // map.setCenter(group.getBoundingBox().getCenter());
-          var icon = new H.map.Icon(svgMarkupH),
+          // var x=document.getElementById('Places')
+          var icon;
+          if(cat==="cat=hospital-health-care-facility")icon=new H.map.Icon(svgMarkupH);
+  else if(cat==="cat=restaurant")icon=new H.map.Icon(svgMarkupR);
+  else if(cat==="cat=atm-bank-exchange")icon=new H.map.Icon(svgMarkupA);
+  else if(cat==="cat=leisure-outdoor")icon=new H.map.Icon(svgMarkupP);
+          // var icon = new H.map.Icon(svgMarkupH),
           coords = {lat: Arr[j].position[0], lng: Arr[j].position[1]},
           marker = new H.map.Marker(coords, {icon: icon});
           group.addObject(marker);

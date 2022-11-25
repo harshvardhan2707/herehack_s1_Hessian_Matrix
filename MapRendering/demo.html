@@ -15,9 +15,10 @@
     <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-mapevents.js"></script>
   </head>
   <body id="geocode">
+
     <div class="page-header">
         <h1 style="color: white;">20 Min City</h1>
-        <h1 style="color: white;">Where You feel like going Today?</h1>
+        <h1 style="color: white;">Where do you feel like going Today?</h1>
         <!-- <p>Request a location using a free-form text input and display it on the map.</p> -->
         <input type="text" id="Hello">
         <button id="myBtn">Find on map</button>
@@ -28,18 +29,33 @@
       <a href="#Places">Places</a>
       <a href="#contact">Contact</a>
       <a href="#about">About</a>
-    </div>
+    </div>  
+
+    <select name="Places" id="Places">
+      <option value="Restaurants" id="Restaurants">Restaurants</option>
+      <option value="Hospitals" id="Hospitals">Hospital</option>
+      <option value="Atm" id="Atm">Atm</option>
+      <option value="Parks" id="Parks">Parks</option>
+    </select>
+    
+    
+   
+    <!-- Load font awesome icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
     <!-- <p>This example makes a geocoding request and retrieves the latitude, longitude and 
       complete address details of <b>200 S Mathilda Ave, Sunnyvale, CA</b> based on a free-form 
       text input. A clickable marker is placed on the location found.</p> -->
     <div id="map"></div>
-    <div id="panel"></div>
+    <!-- <div id="panel"></div>
     <h3 style="color: white;">Code</h3>
     <p style="color: white;">Access to the geocoding service is obtained from the <code>H.service.Platform</code>
        by calling <code>getSearchService()</code>. The <code>geocode()</code> method is used 
        to find a location by passing in the relevant <code>q</code> parameter as defined in 
        <a href="https://developer.here.com/documentation/geocoding-search-api/dev_guide/topics/endpoint-geocode-brief.html" target="_blank">Geocoding and Search API v7</a>. 
-       The styling and display of the response is under the control of the developer.</p>
+       The styling and display of the response is under the control of the developer.</p> -->
     <script type="text/javascript" src='demo.js'></script>
+   
   </body>
 </html>
