@@ -7,9 +7,76 @@
  * see: http://developer.here.com/rest-apis/documentation/geocoder/topics/resource-geocode.html
  *
  * @param   {H.service.Platform} platform    A stub class to access HERE services
+ *  @param {H.map.Group} group       The group holding the new marker
+ * @param {H.geo.Point} coordinate  The location of the marker
+ * @param {String} html             Data associated with the marker
  */
 
- const API="SzzUhV7G1Ir3KuY01HwSptDxR6oY_urxQ5PsztU4FLI"
+ const API="NI3GMO5BI1034mb3gaU-KWf9hKAlKwIWqQoxPuhSuTY"
+
+ function calculateRouteFromAtoB(platform,startlat,startlon,endlat,endlon) {
+  var router = platform.getRoutingService(null, 8),
+      routeRequestParams = {
+        routingMode: 'fast',
+        transportMode: 'car',
+        origin: startlat+","+startlon, // Brandenburg Gate
+        destination: endlat+","+endlon, // Friedrichstraße Railway Station
+        return: 'polyline,turnByTurnActions,actions,instructions,travelSummary'
+      };
+
+  router.calculateRoute(
+    routeRequestParams,
+    onSuccess2,
+    onError
+  );
+}
+
+function onSuccess2(result) {
+  var route = result.routes[0];
+
+  /*
+   * The styling of the route response on the map is entirely under the developer's control.
+   * A representative styling can be found the full JS + HTML code of this example
+   * in the functions below:
+   */
+  addRouteShapeToMap(route);
+  addManueversToMap(route);
+  addWaypointsToPanel(route);
+  addManueversToPanel(route);
+  // addSummaryToPanel(route);
+  // ... etc.
+}
+function onSuccess(result) {
+  var route = result.routes[0];
+
+  /*
+   * The styling of the route response on the map is entirely under the developer's control.
+   * A representative styling can be found the full JS + HTML code of this example
+   * in the functions below:
+   */
+  addRouteShapeToMap(route);
+  addManueversToMap(route);
+  addWaypointsToPanel(route);
+  addManueversToPanel(route);
+  addSummaryToPanel(route);
+  // ... etc.
+}
+
+function addWaypointsToPanel(route) {
+  var nodeH3 = document.createElement('h3'),
+    labels = [];
+
+  route.sections.forEach((section) => {
+    labels.push(
+      section.turnByTurnActions[0].nextRoad.name[0].value)
+    labels.push(
+      section.turnByTurnActions[section.turnByTurnActions.length - 1].currentRoad.name[0].value)
+  });
+
+  nodeH3.textContent = labels.join(' - ');
+  routeInstructionsContainer.innerHTML = '';
+  routeInstructionsContainer.appendChild(nodeH3);
+}
 
  function calculateIsolineRoute(platform,lat,lon) {
   var router = platform.getRoutingService(null, 8),
@@ -65,7 +132,7 @@ function showPosition(position) {
   const lat= position.coords.latitude; const lon= position.coords.longitude;
   let value=''
   //console.log(position.coords.latitude, position.coords.longitude);
-  fetch('https://revgeocode.search.hereapi.com/v1/revgeocode?at='+lat+','+lon+'&lang=en-US&apiKey=SzzUhV7G1Ir3KuY01HwSptDxR6oY_urxQ5PsztU4FLI')
+  fetch('https://revgeocode.search.hereapi.com/v1/revgeocode?at='+lat+','+lon+'&lang=en-US&apiKey='+API)
   .then((response) => response.json())
   .then((data) => {
     geocode(platform,data.items[0].title)
@@ -292,8 +359,10 @@ function showPosition(position) {
         for(j=0;j<Arr.length;j+=1){
           group.addEventListener('tap', function (evt) {
             map.setCenter(evt.target.getGeometry());
+            console.log(Arr[j]);
             openBubble(
-               evt.target.getGeometry(), evt.target.label);
+               evt.target.getGeometry(), Arr[j].title);
+              //  calculateRouteFromAtoB(platform,location.position.lat,location.position.lng,Arr[j].position[0],Arr[j].position[1]);
           }, false);
         
           // Add the locations group to the map
