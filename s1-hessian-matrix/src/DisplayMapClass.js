@@ -26,7 +26,7 @@ export class DisplayMapClass extends React.Component {
       defaultLayers.vector.normal.map,
       {
         // This map is centered over searched value(?)
-        center: { lat: this.props.lat, lng: this.props.lon },
+        center: { lat: 100, lng: 10 },
         zoom: 12,
         pixelRatio: window.devicePixelRatio || 1
       }

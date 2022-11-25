@@ -35,8 +35,8 @@ import data from './API.json';
 function App() {
   let textInput = React.createRef();
   const [loc,setLoc]=useState('Pune');
-  const [lat,setLat]=useState(50);
-  const [lon,setLon]=useState(0);
+  const [lat,setLat]=useState(28.474388);
+  const [lon,setLon]=useState(77.503990);
   function handleClick() {
   // console.log(textInput.current.value);
   setLoc(textInput.current.value);
@@ -56,6 +56,7 @@ function App() {
       // console.log(X[])
       // alert(X.items)
       console.log(X.data.items[0].address); 
+      console.log(X.data.items[0].position.lat,X.data.items[0].position.lng);
       setLat(X.data.items[0].position.lat);
       setLon(X.data.items[0].position.lng);
       // DisplayMapClass.
@@ -64,7 +65,7 @@ return (
   <div>
       <input ref={textInput} placeholder="Type a message..." />
       <button onClick={handleClick}>Search Location</button>
-  <DisplayMapClass lat={lat} lon={lon}/>
+  <DisplayMapClass/>
   </div>
   
   
